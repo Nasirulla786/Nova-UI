@@ -4,6 +4,8 @@ import "./globals.css";
 import {ViewTransitions} from "next-view-transitions"
 import { ThemeProvider } from "@/components/providers/theme-providers";
 
+
+import { RootProvider } from 'fumadocs-ui/provider';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,6 +34,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
 
+        {/* <RootProvider></RootProvider> */}
+         <RootProvider>
+
          <ThemeProvider
              attribute="class"
   defaultTheme="system"
@@ -39,6 +44,7 @@ export default function RootLayout({
           >
         {children}
         </ThemeProvider>
+        </RootProvider>
       </body>
     </html>
     </ViewTransitions>
