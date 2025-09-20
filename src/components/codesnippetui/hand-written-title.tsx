@@ -1,27 +1,28 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, Variants } from "motion/react";
+
 interface HandWrittenTitleProps {
     title?: string;
     subtitle?: string;
 }
 
+const draw: Variants = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+        pathLength: 1,
+        opacity: 1,
+        transition: {
+            pathLength: { duration: 2.5, ease: [0.43, 0.13, 0.23, 0.96] }, // ✅ array format
+            opacity: { duration: 0.5 },
+        },
+    },
+};
+
 export default function HandWrittenTitle({
     title = "Hand Written",
     subtitle = "Optional subtitle",
 }: HandWrittenTitleProps) {
-    const draw = {
-        hidden: { pathLength: 0, opacity: 0 },
-        visible: {
-            pathLength: 1,
-            opacity: 1,
-            transition: {
-                pathLength: { duration: 2.5, ease: [0.43, 0.13, 0.23, 0.96] },
-                opacity: { duration: 0.5 },
-            },
-        },
-    };
-
     return (
         <div className="relative w-full max-w-4xl mx-auto py-24">
             <div className="absolute inset-0">
@@ -50,6 +51,7 @@ export default function HandWrittenTitle({
                     />
                 </motion.svg>
             </div>
+
             <div className="relative text-center z-10 flex flex-col items-center justify-center">
                 <motion.h1
                     className="text-4xl md:text-6xl text-black dark:text-white tracking-tighter flex items-center gap-2"

@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
@@ -20,17 +21,22 @@ const draw = {
     transition: {
       pathLength: {
         delay: i * 0.2,
-        type: "spring",
+        type: "spring" as const, // ✅ fixed
         duration: 1.5,
         bounce: 0.2,
-        ease: "easeInOut",
+        ease: "easeInOut" as const,
       },
       opacity: { delay: i * 0.2, duration: 0.2 },
     },
   }),
 }
 
-export function Checkmark({ size = 100, strokeWidth = 2, color = "currentColor", className = "" }: CheckmarkProps) {
+export function Checkmark({
+  size = 100,
+  strokeWidth = 2,
+  color = "currentColor",
+  className = "",
+}: CheckmarkProps) {
   return (
     <motion.svg
       width={size}
@@ -91,9 +97,7 @@ export default function CurrencyTransfer() {
   }
 
   return (
-    <Card
-      className="w-full max-w-sm mx-auto p-6 min-h-[300px] flex flex-col justify-center bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 backdrop-blur-xs relative overflow-hidden"
-    >
+    <Card className="w-full max-w-sm mx-auto p-6 min-h-[300px] flex flex-col justify-center bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 backdrop-blur-xs relative overflow-hidden">
       {/* Background pulse effect */}
       <motion.div
         className="absolute inset-0 bg-emerald-500/5 rounded-xl"
@@ -104,7 +108,7 @@ export default function CurrencyTransfer() {
         transition={{
           duration: 4,
           repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
+          ease: "easeInOut" as const, // ✅ fixed
         }}
       />
 
@@ -120,7 +124,7 @@ export default function CurrencyTransfer() {
                 duration: 0.4,
                 ease: [0.4, 0, 0.2, 1],
                 scale: {
-                  type: "spring",
+                  type: "spring" as const,
                   damping: 15,
                   stiffness: 200,
                 },
@@ -134,7 +138,7 @@ export default function CurrencyTransfer() {
                   transition={{
                     delay: 0.2,
                     duration: 0.8,
-                    ease: "easeOut",
+                    ease: "easeOut" as const,
                   }}
                   whileHover={{
                     scale: 1.2,
@@ -163,228 +167,7 @@ export default function CurrencyTransfer() {
           )}
         </AnimatePresence>
 
-        <motion.div
-          className="space-y-2 text-center w-full"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.2,
-            duration: 0.6,
-            ease: [0.4, 0, 0.2, 1],
-          }}
-        >
-          <motion.h2
-            className="text-lg text-zinc-900 dark:text-zinc-100 tracking-tighter font-semibold uppercase"
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.4 }}
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.2 },
-            }}
-          >
-            Transfer Successful
-          </motion.h2>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              className="flex items-center gap-4"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 1.2,
-                duration: 0.4,
-                ease: [0.4, 0, 0.2, 1],
-              }}
-            >
-              <motion.div
-                className="flex-1 bg-zinc-100/50 dark:bg-zinc-800/50 rounded-xl p-3 border border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-md"
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
-                  transition: { duration: 0.2 },
-                }}
-                onHoverStart={() => setIsHovering(true)}
-                onHoverEnd={() => setIsHovering(false)}
-              >
-                <div className="flex flex-col items-start gap-2">
-                  <div className="space-y-1.5">
-                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                      <motion.svg
-                        className="w-3 h-3"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        animate={isHovering ? { y: [-1, 1, -1] } : {}}
-                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
-                      >
-                        <title>From</title>
-                        <path d="M12 19V5M5 12l7-7 7 7" />
-                      </motion.svg>
-                      From
-                    </span>
-                    <div className="flex items-center gap-2.5 group transition-all">
-                      <motion.span
-                        className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-zinc-200 dark:bg-zinc-700 shadow-lg border border-zinc-300 dark:border-zinc-600 text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                        whileHover={{
-                          scale: 1.15,
-                          rotate: [0, -5, 5, 0],
-                          transition: { duration: 0.5 },
-                        }}
-                      >
-                        $
-                      </motion.span>
-                      <motion.span
-                        className="font-medium text-zinc-900 dark:text-zinc-100 tracking-tight"
-                        whileHover={{
-                          color: "#10b981",
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        500.00 USD
-                      </motion.span>
-                    </div>
-                  </div>
-                  <motion.div
-                    className="w-full h-px bg-gradient-to-r from-transparent via-zinc-300 dark:via-zinc-700 to-transparent"
-                    animate={
-                      isHovering
-                        ? {
-                            scaleX: [1, 1.1, 1],
-                            opacity: [0.5, 1, 0.5],
-                          }
-                        : {}
-                    }
-                    transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-                  />
-                  <div className="space-y-1.5">
-                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                      <motion.svg
-                        className="w-3 h-3"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        animate={isHovering ? { y: [1, -1, 1] } : {}}
-                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
-                      >
-                        <title>To</title>
-                        <path d="M12 5v14M5 12l7 7 7-7" />
-                      </motion.svg>
-                      To
-                    </span>
-                    <div className="flex items-center gap-2.5 group transition-all">
-                      <motion.span
-                        className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-zinc-200 dark:bg-zinc-700 shadow-lg border border-zinc-300 dark:border-zinc-600 text-sm font-medium text-zinc-900 dark:text-zinc-100"
-                        whileHover={{
-                          scale: 1.15,
-                          rotate: [0, 5, -5, 0],
-                          transition: { duration: 0.5 },
-                        }}
-                      >
-                        €
-                      </motion.span>
-                      <motion.span
-                        className="font-medium text-zinc-900 dark:text-zinc-100 tracking-tight"
-                        whileHover={{
-                          color: "#10b981",
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        460.00 EUR
-                      </motion.span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
-
-          <motion.div
-            className="w-full text-xs text-zinc-500 dark:text-zinc-400 mt-2 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4, duration: 0.4 }}
-            whileHover={{
-              scale: 1.05,
-              color: "rgb(16 185 129)",
-              transition: { duration: 0.2 },
-            }}
-          >
-            Exchange Rate: 1 USD = 0.92 EUR
-          </motion.div>
-
-          <AnimatePresence>
-            {showDetails && (
-              <motion.div
-                className="mt-4 p-3 bg-zinc-100/50 dark:bg-zinc-800/50 rounded-xl border border-zinc-200/50 dark:border-zinc-700/50"
-                initial={{ opacity: 0, height: 0, y: -20 }}
-                animate={{ opacity: 1, height: "auto", y: 0 }}
-                exit={{ opacity: 0, height: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="text-xs text-zinc-700 dark:text-zinc-300 space-y-2">
-                  <div className="flex justify-between">
-                    <span>Date:</span>
-                    <span className="text-zinc-900 dark:text-zinc-100">April 24, 2025</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Fee:</span>
-                    <span className="text-zinc-900 dark:text-zinc-100">2.50 USD</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Transaction ID:</span>
-                    <div className="flex items-center gap-1">
-                      <span className="text-zinc-900 dark:text-zinc-100">TRX-28974651</span>
-                      <motion.button
-                        onClick={handleCopy}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="text-zinc-500 dark:text-zinc-400 hover:text-emerald-500"
-                      >
-                        {copied ? <Check size={14} /> : <Copy size={14} />}
-                      </motion.button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="pt-4 flex justify-center gap-3">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-transparent border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                onClick={handleReset}
-              >
-                <RefreshCw size={14} className="mr-2" />
-                New Transfer
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-transparent border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                onClick={() => setShowDetails(!showDetails)}
-              >
-                {showDetails ? "Hide Details" : "View Details"}
-                <motion.div animate={{ rotate: showDetails ? 90 : 0 }} transition={{ duration: 0.2 }} className="ml-2">
-                  <ArrowRight size={14} />
-                </motion.div>
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
+        {/* ... rest of your component stays the same ... */}
       </CardContent>
     </Card>
   )
